@@ -1,4 +1,6 @@
-package dev.teammusic.SonidoVivo_backend.usuario;
+package dev.teammusic.SonidoVivo_backend.repository;
+
+import dev.teammusic.SonidoVivo_backend.model.Usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

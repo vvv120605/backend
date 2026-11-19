@@ -1,4 +1,4 @@
-package dev.teammusic.SonidoVivo_backend.boleta;
+package dev.teammusic.SonidoVivo_backend.model;
 
 public enum EstadoBoleta {
     PENDIENTE,

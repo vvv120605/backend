@@ -1,4 +1,4 @@
-package dev.teammusic.SonidoVivo_backend.usuario;
+package dev.teammusic.SonidoVivo_backend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 

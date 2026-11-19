@@ -1,6 +1,5 @@
-package dev.teammusic.SonidoVivo_backend.producto;
+package dev.teammusic.SonidoVivo_backend.model;
 
-import dev.teammusic.SonidoVivo_backend.categoria.Categoria;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

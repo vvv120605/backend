@@ -1,4 +1,4 @@
-package dev.teammusic.SonidoVivo_backend;
+package dev.teammusic.SonidoVivo_backend.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

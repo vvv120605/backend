@@ -1,4 +1,4 @@
-package dev.teammusic.SonidoVivo_backend.categoria;
+package dev.teammusic.SonidoVivo_backend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

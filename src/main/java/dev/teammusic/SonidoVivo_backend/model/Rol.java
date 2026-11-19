@@ -1,4 +1,4 @@
-package dev.teammusic.SonidoVivo_backend.usuario;
+package dev.teammusic.SonidoVivo_backend.model;
 
 public enum Rol {
     ADMIN,
