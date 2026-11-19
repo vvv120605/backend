@@ -1,7 +1,7 @@
 package dev.teammusic.SonidoVivo_backend.controller;
 
 import dev.teammusic.SonidoVivo_backend.model.Usuario;
-import dev.teammusic.SonidoVivo_backend.repository.UsuarioRepository;
+import dev.teammusic.SonidoVivo_backend.service.UsuarioService;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -20,20 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    private final UsuarioRepository repository;
+    private final UsuarioService service;
 
-    public UsuarioController(UsuarioRepository repository) {
-        this.repository = repository;
+    public UsuarioController(UsuarioService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<Usuario> listar() {
-        return repository.findAll();
+        return service.listar();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> obtener(@PathVariable Long id) {
-        return repository.findById(id)
+        return service.obtenerPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -42,6 +42,6 @@ public class UsuarioController {
     @ResponseStatus(HttpStatus.CREATED)
     public Usuario crear(@Valid @RequestBody Usuario usuario) {
         usuario.setId(null);
-        return repository.save(usuario);
+        return service.crear(usuario);
     }
 }
