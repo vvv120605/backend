@@ -1,6 +1,6 @@
 package dev.teammusic.SonidoVivo_backend.dto;
 
-public class ProductResponseDTO {
+public class ProductoResponseDTO {
     
     private Long id;
     private String codigo;
@@ -13,10 +13,10 @@ public class ProductResponseDTO {
     private Long categoriaId;
     private String categoriaNombre;
 
-    public ProductResponseDTO() {
+    public ProductoResponseDTO() {
     }
 
-    public ProductResponseDTO(Long id, String codigo, String nombre, String descripcion, Integer precio, Integer stock, Integer stockCritico, String imagen, Long categoriaId, String categoriaNombre) {
+    public ProductoResponseDTO(Long id, String codigo, String nombre, String descripcion, Integer precio, Integer stock, Integer stockCritico, String imagen, Long categoriaId, String categoriaNombre) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;

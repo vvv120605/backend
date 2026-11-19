@@ -33,6 +33,10 @@ public class ProductoRequestDTO {
     @Positive
     private Long categoriaId;
 
+    @NotNull
+    @PositiveOrZero
+    private Integer precio;
+
     public String getCodigo() {
         return codigo;
     }
@@ -88,4 +92,13 @@ public class ProductoRequestDTO {
     public void setCategoriaId(Long categoriaId) {
         this.categoriaId = categoriaId;
     }
+
+    public Integer getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Integer precio) {
+        this.precio = precio;
+    }
+
 }
