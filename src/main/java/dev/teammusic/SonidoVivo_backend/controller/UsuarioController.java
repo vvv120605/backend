@@ -41,7 +41,6 @@ public class UsuarioController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Usuario crear(@Valid @RequestBody Usuario usuario) {
-        usuario.setId(null);
         return service.crear(usuario);
     }
 }
