@@ -1,10 +1,7 @@
 package dev.teammusic.SonidoVivo_backend.controller;
 
-import dev.teammusic.SonidoVivo_backend.model.Producto;
-import dev.teammusic.SonidoVivo_backend.service.ProductoService;
-
-import jakarta.validation.Valid;
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,11 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.teammusic.SonidoVivo_backend.dto.ProductoRequestDTO;
+import dev.teammusic.SonidoVivo_backend.dto.ProductoResponseDTO;
+import dev.teammusic.SonidoVivo_backend.service.ProductoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/productos")
 public class ProductoController {
-    
+
     private final ProductoService service;
 
     public ProductoController(ProductoService service) {
@@ -28,42 +29,33 @@ public class ProductoController {
     }
 
     @GetMapping
-    public List<Producto> listar() {
-        return service.listar();
+    public List<ProductoResponseDTO> listar() {
+        return service.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id) {
-        return service.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ProductoResponseDTO obtenerPorId(@PathVariable Long id) {
+        return service.obtenerPorId(id);
     }
 
     @GetMapping("/categoria/{categoriaId}")
-    public List<Producto> listarPorCategoria(@PathVariable Long categoriaId) {
+    public List<ProductoResponseDTO> listarPorCategoria(@PathVariable Long categoriaId) {
         return service.listarPorCategoria(categoriaId);
     }
 
     @PostMapping
-    public ResponseEntity<Producto> crear(@Valid @RequestBody Producto producto) {
-        return service.crear(producto)
-                .map(p -> ResponseEntity.status(HttpStatus.CREATED).body(p))
-                .orElse(ResponseEntity.badRequest().build());
+    public ResponseEntity<ProductoResponseDTO> crear(@Valid @RequestBody ProductoRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> actualizar(@PathVariable Long id, @Valid @RequestBody Producto producto) {
-        return service.actualizar(id, producto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ProductoResponseDTO actualizar(@PathVariable Long id, @Valid @RequestBody ProductoRequestDTO dto) {
+        return service.actualizar(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (service.eliminar(id)) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        service.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 }
