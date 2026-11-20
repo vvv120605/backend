@@ -47,7 +47,7 @@ public class CategoriaController {
         return service.crear(categoria);
     }
 
-    @PutMapping("path/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Categoria> actualizar(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
         return service.actualizar(id, categoria)
                 .map(ResponseEntity::ok)
