@@ -38,6 +38,14 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
+    @Size(max = 12)
+    @Column(unique = true, length = 12)
+    private String run;
+
+    @Size(max = 255)
+    @Column(length = 255)
+    private String direccion; 
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Rol rol = Rol.CLIENTE;
@@ -53,6 +61,12 @@ public class Usuario {
     
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String getRun() {return run;}
+    public void setRun(String run) {this.run =run;}
+
+    public String getDireccion() {return direccion;}
+    public void setDireccion(String direccion) {this.direccion = direccion;}
 
     public Rol getRol() { return rol; }
     public void setRol(Rol rol) { this.rol = rol; }

@@ -37,6 +37,8 @@ public class UsuarioService {
 
     public Usuario crear(Usuario usuario) {
         validarEmailLibre(usuario.getEmail(), null);
+        usuario.setRun(normalizarRun(usuario.getRun()));
+        validarRunLibre(usuario.getRun(),null);
         usuario.setId(null);
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuario.setRol(Rol.CLIENTE);
@@ -47,7 +49,10 @@ public class UsuarioService {
         return repository.findById(id)
                 .map(existente -> {
                     validarEmailLibre(datos.getEmail(), id);
+                    String run = normalizarRun(datos.getRun());
+                    validarRunLibre(run,id);
                     existente.setNombre(datos.getNombre());
+                    existente.setRun(run);
                     existente.setEmail(datos.getEmail());
                     existente.setPassword(passwordEncoder.encode(datos.getPassword()));
                     existente.setRol(datos.getRol());
@@ -74,5 +79,25 @@ public class UsuarioService {
                 .ifPresent(u -> {
                     throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un usuario con ese email");
                 });
+    }
+
+    //Deja el RUN sin puntos ni espacios y con la K en mayuscula (ej: 12.345.678-k -> 12345678-K)
+    private String normalizarRun(String run){
+        if (run == null || run.isBlank()){
+            return null;
+        }
+        return run.replace(".","").replace(" ", "").toUpperCase();
+    }
+
+    //Verifica que el RUN no lo use otro usuario
+    private void validarRunLibre(String run, Long idActual){
+        if (run == null){
+            return;
+        }
+        repository.findByRun(run)
+        .filter(u -> !u.getId().equals(idActual))
+        .ifPresent(u -> {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un usuario con ese RUN");
+        });
     }
 }
