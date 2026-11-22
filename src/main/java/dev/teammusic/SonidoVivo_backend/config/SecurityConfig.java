@@ -39,6 +39,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
                 // Tienda: cualquiera ve productos y categorías
                 .requestMatchers(HttpMethod.GET, "/api/productos/**", "/api/categorias/**").permitAll()
+                //Cualquier usuario con sesión puede ver sus boletas
+                .requestMatchers(HttpMethod.GET, "/api/boletas/mias").authenticated()
                 // Órdenes: ADMIN y VENDEDOR pueden verlas
                 .requestMatchers(HttpMethod.GET, "/api/boletas/**").hasAnyRole("ADMIN", "VENDEDOR")
                 // Comprar: cualquier usuario con sesión
