@@ -35,6 +35,11 @@ public class JwtFilter extends OncePerRequestFilter {
         if (cabecera != null && cabecera.startsWith("Bearer ")) {
             try {
                 Claims claims = jwtService.validarToken(cabecera.substring(7));
+                if (!"access".equals(claims.get("tipo",String.class))) {
+                    chain.doFilter(request, response);
+                    return;
+                }
+
                 String rol = claims.get("rol", String.class);
 
                 var autenticacion = new UsernamePasswordAuthenticationToken(

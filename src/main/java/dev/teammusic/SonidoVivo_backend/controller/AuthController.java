@@ -14,6 +14,9 @@ import dev.teammusic.SonidoVivo_backend.dto.LoginResponseDTO;
 import dev.teammusic.SonidoVivo_backend.model.Usuario;
 import dev.teammusic.SonidoVivo_backend.repository.UsuarioRepository;
 import dev.teammusic.SonidoVivo_backend.service.JwtService;
+import dev.teammusic.SonidoVivo_backend.dto.RefreshRequestDTO;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -41,7 +44,32 @@ public class AuthController {
 
         return ResponseEntity.ok(new LoginResponseDTO(
                 jwtService.generarToken(usuario),
+                jwtService.generarRefreshToken(usuario),
                 usuario.getRol().name(),
                 usuario.getNombre()));
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponseDTO> refresh(@Valid @RequestBody RefreshRequestDTO dto) {
+        Claims claims;
+        try {
+            claims = jwtService.validarToken(dto.refreshToken());
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token inválido o vencido");
+        }
+
+        if (!"refresh".equals(claims.get("tipo", String.class))) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "El token enviado no es un refresh token");
+        }
+
+        Usuario usuario = usuarioRepository.findByEmail(claims.getSubject())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario no encontrado"));
+
+        return ResponseEntity.ok(new LoginResponseDTO(
+                jwtService.generarToken(usuario),
+                jwtService.generarRefreshToken(usuario),
+                usuario.getRol().name(),
+                usuario.getNombre()));
+    }
+    
 }
