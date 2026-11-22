@@ -10,8 +10,6 @@ public interface BoletaRepository extends JpaRepository<Boleta, Long> {
 
     List<Boleta> findByUsuarioId(Long usuarioId);
 
-    List<Boleta> findByUsuarioEmail(String email);
-
     List<Boleta> findByEstado(EstadoBoleta estado);
 
     boolean existsByUsuarioId(Long usuarioId);
