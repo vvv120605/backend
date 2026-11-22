@@ -56,6 +56,13 @@ public class BoletaService {
                 .toList();
     }
 
+    // Listar por Email de usuario
+    public List<BoletaResponseDTO> listarPorEmail(String email) {
+            return boletaRepository.findByUsuarioEmail(email).stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
     // Listar por estado
     public List<BoletaResponseDTO> listarPorEstado(EstadoBoleta estado) {
         return boletaRepository.findByEstado(estado).stream()
@@ -64,8 +71,8 @@ public class BoletaService {
     }
 
     // Crear boleta: calcula el total, valida y descuenta el stock
-    public BoletaResponseDTO crear(BoletaRequestDTO dto) {
-        Usuario usuario = usuarioRepository.findById(dto.usuarioId())
+    public BoletaResponseDTO crear(BoletaRequestDTO dto, String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
         Boleta boleta = new Boleta();
@@ -108,6 +115,20 @@ public class BoletaService {
     // Cambiar el estado de la boleta
     public BoletaResponseDTO cambiarEstado(Long id, EstadoBoleta estado) {
         Boleta boleta = buscarBoleta(id);
+
+        if (boleta.getEstado() == EstadoBoleta.ANULADA) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, 
+                "Una boleta anulada no puede cambiar de estado");
+        }
+
+        if (estado == EstadoBoleta.ANULADA) {
+            // Si se anula, se devuelve el stock de los productos
+            for (DetalleBoleta detalle : boleta.getDetalles()) {
+                Producto producto = detalle.getProducto();
+                producto.setStock(producto.getStock() + detalle.getCantidad());
+            }
+        }
+        
         boleta.setEstado(estado);
         return toResponse(boletaRepository.save(boleta));
     }
