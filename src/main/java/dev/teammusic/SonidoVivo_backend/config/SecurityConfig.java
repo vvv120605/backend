@@ -35,16 +35,16 @@ public class SecurityConfig {
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // Público: login, Swagger, página de error y registro
-                .requestMatchers("/error", "/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+                .requestMatchers("/error", "/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/usuarios").permitAll()
                 // Tienda: cualquiera ve productos y categorías
-                .requestMatchers(HttpMethod.GET, "/api/productos/**", "/api/categorias/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/productos/**", "/api/v1/categorias/**").permitAll()
                 //Cualquier usuario con sesión puede ver sus boletas
-                .requestMatchers(HttpMethod.GET, "/api/boletas/mias").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/v1/boletas/mias").authenticated()
                 // Órdenes: ADMIN y VENDEDOR pueden verlas
-                .requestMatchers(HttpMethod.GET, "/api/boletas/**").hasAnyRole("ADMIN", "VENDEDOR")
+                .requestMatchers(HttpMethod.GET, "/api/v1/boletas/**").hasAnyRole("ADMIN", "VENDEDOR")
                 // Comprar: cualquier usuario con sesión
-                .requestMatchers(HttpMethod.POST, "/api/boletas").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/v1/boletas").authenticated()
                 // Todo lo demás (crear, editar, borrar, cambiar estado de boletas): solo ADMIN
                 .anyRequest().hasRole("ADMIN"))
             .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))

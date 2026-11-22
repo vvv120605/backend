@@ -17,7 +17,7 @@ import dev.teammusic.SonidoVivo_backend.service.JwtService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final UsuarioRepository usuarioRepository;
