@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.core.Authentication;
 
 import dev.teammusic.SonidoVivo_backend.dto.BoletaRequestDTO;
 import dev.teammusic.SonidoVivo_backend.dto.BoletaResponseDTO;
@@ -50,15 +49,9 @@ public class BoletaController {
         return service.listarPorEstado(estado);
     }
 
-    @GetMapping("/mias")
-    public List<BoletaResponseDTO> listarMias(Authentication auth) {
-        return service.listarPorEmail(auth.getName());
-    }
-    
-
     @PostMapping
-    public ResponseEntity<BoletaResponseDTO> crear(@Valid @RequestBody BoletaRequestDTO dto, Authentication auth) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(dto, auth.getName()));
+    public ResponseEntity<BoletaResponseDTO> crear(@Valid @RequestBody BoletaRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(dto));
     }
 
     @PatchMapping("/{id}/estado")
