@@ -53,6 +53,7 @@ public class UsuarioService {
                     validarRunLibre(run,id);
                     existente.setNombre(datos.getNombre());
                     existente.setRun(run);
+                    existente.setDireccion(datos.getDireccion());
                     existente.setEmail(datos.getEmail());
                     existente.setPassword(passwordEncoder.encode(datos.getPassword()));
                     existente.setRol(datos.getRol());
