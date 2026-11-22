@@ -21,7 +21,7 @@ import dev.teammusic.SonidoVivo_backend.service.BoletaService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/boletas")
+@RequestMapping("/api/v1/boletas")
 public class BoletaController {
 
     private final BoletaService service;

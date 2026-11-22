@@ -19,7 +19,7 @@ import dev.teammusic.SonidoVivo_backend.service.ProductoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/api/v1/productos")
 public class ProductoController {
 
     private final ProductoService service;
