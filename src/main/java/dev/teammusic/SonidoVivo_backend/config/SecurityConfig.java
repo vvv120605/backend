@@ -35,10 +35,10 @@ public class SecurityConfig {
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // Público: login, Swagger, página de error y registro
-                .requestMatchers("/error", "/api/auth/*", "/v3/api-docs/", "/swagger-ui/*", "/swagger-ui.html").permitAll()
+                .requestMatchers("/error", "/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
                 // Tienda: cualquiera ve productos y categorías
-                .requestMatchers(HttpMethod.GET, "/api/productos/*", "/api/categorias/*").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/productos/**", "/api/categorias/**").permitAll()
                 // Órdenes: ADMIN y VENDEDOR pueden verlas
                 .requestMatchers(HttpMethod.GET, "/api/boletas/**").hasAnyRole("ADMIN", "VENDEDOR")
                 // Comprar: cualquier usuario con sesión
