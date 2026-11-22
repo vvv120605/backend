@@ -1,5 +1,6 @@
 package dev.teammusic.SonidoVivo_backend.service;
 
+import dev.teammusic.SonidoVivo_backend.model.Rol;
 import dev.teammusic.SonidoVivo_backend.model.Usuario;
 import dev.teammusic.SonidoVivo_backend.repository.BoletaRepository;
 import dev.teammusic.SonidoVivo_backend.repository.UsuarioRepository;
@@ -38,6 +39,7 @@ public class UsuarioService {
         validarEmailLibre(usuario.getEmail(), null);
         usuario.setId(null);
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        usuario.setRol(Rol.CLIENTE);
         return repository.save(usuario);
     }
 
