@@ -71,4 +71,24 @@ class UsuarioServiceTest {
         assertEquals(HttpStatus.CONFLICT, error.getStatusCode());
         verify(repository, never()).save(any());
     }
+
+    @Test
+        void registrarConRunRepetidoLanza409() {
+            Usuario existente = new Usuario();
+            existente.setId(1L);
+            existente.setRun("12345678-K");
+
+            Usuario nuevo = new Usuario();
+            nuevo.setEmail("nuevo@test.cl");
+            nuevo.setRun("12.345.678-k"); // mismo RUN escrito con puntos y k minúscula
+            nuevo.setPassword("1234");
+
+            when(repository.findByEmail("nuevo@test.cl")).thenReturn(Optional.empty());
+            when(repository.findByRun("12345678-K")).thenReturn(Optional.of(existente));
+
+            ResponseStatusException error = assertThrows(ResponseStatusException.class, () -> service.crear(nuevo));
+
+            assertEquals(HttpStatus.CONFLICT, error.getStatusCode());
+            verify(repository, never()).save(any());
+        }
 }

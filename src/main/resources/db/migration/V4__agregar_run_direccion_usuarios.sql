@@ -1,0 +1,3 @@
+ALTER TABLE usuarios ADD COLUMN run VARCHAR(12) NULL;
+ALTER TABLE usuarios ADD COLUMN direccion VARCHAR(255) NULL;
+ALTER TABLE usuarios ADD CONSTRAINT uk_usuarios_run UNIQUE (run);
