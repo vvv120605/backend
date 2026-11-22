@@ -7,6 +7,7 @@ import dev.teammusic.SonidoVivo_backend.repository.UsuarioRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,10 +16,14 @@ public class UsuarioService {
 
     private final UsuarioRepository repository;
     private final BoletaRepository boletaRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository repository, BoletaRepository boletaRepository) {
+    public UsuarioService(UsuarioRepository repository,
+                          BoletaRepository boletaRepository,
+                          PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.boletaRepository = boletaRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Usuario> listar() {
@@ -32,6 +37,7 @@ public class UsuarioService {
     public Usuario crear(Usuario usuario) {
         validarEmailLibre(usuario.getEmail(), null);
         usuario.setId(null);
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return repository.save(usuario);
     }
 
@@ -41,7 +47,7 @@ public class UsuarioService {
                     validarEmailLibre(datos.getEmail(), id);
                     existente.setNombre(datos.getNombre());
                     existente.setEmail(datos.getEmail());
-                    existente.setPassword(datos.getPassword());
+                    existente.setPassword(passwordEncoder.encode(datos.getPassword()));
                     existente.setRol(datos.getRol());
                     return repository.save(existente);
                 });
