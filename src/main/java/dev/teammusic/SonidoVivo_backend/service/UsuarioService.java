@@ -38,7 +38,7 @@ public class UsuarioService {
     public Usuario crear(Usuario usuario) {
         validarEmailLibre(usuario.getEmail(), null);
         usuario.setRun(normalizarRun(usuario.getRun()));
-        validarRunLibre(usuario.getRun(),null)
+        validarRunLibre(usuario.getRun(),null);
         usuario.setId(null);
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuario.setRol(Rol.CLIENTE);
