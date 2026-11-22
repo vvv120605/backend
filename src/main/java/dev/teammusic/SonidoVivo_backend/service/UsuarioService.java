@@ -90,7 +90,7 @@ public class UsuarioService {
     }
 
     //Verifica que el RUN no lo use otro usuario
-    private void validadRunLibre(String run, Long idActual){
+    private void validarRunLibre(String run, Long idActual){
         if (run == null){
             return;
         }
