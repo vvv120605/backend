@@ -11,6 +11,7 @@ import dev.teammusic.SonidoVivo_backend.dto.ProductoResponseDTO;
 import dev.teammusic.SonidoVivo_backend.model.Producto;
 import dev.teammusic.SonidoVivo_backend.repository.CategoriaRepository;
 import dev.teammusic.SonidoVivo_backend.repository.ProductoRepository;
+import dev.teammusic.SonidoVivo_backend.repository.DetalleBoletaRepository;
 import jakarta.transaction.Transactional;
  
 @Service
@@ -19,11 +20,14 @@ public class ProductoService {
  
     private final ProductoRepository productoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final DetalleBoletaRepository detalleBoletaRepository;
  
     public ProductoService(ProductoRepository productoRepository,
-            CategoriaRepository categoriaRepository) {
+            CategoriaRepository categoriaRepository,
+            DetalleBoletaRepository detalleBoletaRepository) {
         this.productoRepository = productoRepository;
         this.categoriaRepository = categoriaRepository;
+        this.detalleBoletaRepository = detalleBoletaRepository;
     }
  
     // Listar todos los productos
@@ -66,6 +70,11 @@ public class ProductoService {
     public void eliminar(Long id) {
         if (!productoRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado");
+        }
+        // Un producto que ya se vendió no se puede borrar: las boletas lo necesitan
+        if (detalleBoletaRepository.existsByProductoId(id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "No se puede eliminar un producto que tiene ventas registradas");
         }
         productoRepository.deleteById(id);
     }

@@ -9,4 +9,5 @@ public interface DetalleBoletaRepository extends JpaRepository<DetalleBoleta, Lo
 
     List<DetalleBoleta> findByBoletaId(Long boletaId);
     
+    boolean existsByProductoId(Long prductoId);
 }
